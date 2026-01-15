@@ -68,12 +68,48 @@ MERGE (d:DPU {id: 'DPU-123'})
 ```
 
 ## 5. Querying the Database
-
 ### Step 7: Basic Querying
+> MATCH (n)
+> RETURN n
+> LIMIT 50;
+> 
+## 6. Hierarchical Queries
 
-Use `MATCH` statements to retrieve **nodes and relationships** from the graph.
+> MATCH (d:DPU)-[:LOCATED_IN]->(b:Building)-[:SERVED_BY]->(n:OLT)
+>RETURN d, b, n;
+### Step 8: Query Hierarchical Data (Bottom-Up)
 
-```cypher
-MATCH (n)
-RETURN n
-LIMIT 50;
+To retrieve data starting from the **lowest level of a hierarchy**  
+(e.g., **DPU → Building → Network**):
+
+> **Cypher Example**
+>
+> MATCH (d:DPU)-[:LOCATED_IN]->(b:Building)-[:SERVED_BY]->(n:OLT)  
+> RETURN d, b, n;
+
+### Common Use Cases
+- Impact analysis
+- Service qualification
+- Network dependency tracing
+
+ℹ️ This type of query is especially useful in **telecom inventory and topology models**, where relationships between locations and network elements are critical.
+
+---
+
+## 7. WHERE Clause
+
+### Step 9: Filtering with `WHERE`
+
+The `WHERE` clause is used to **filter query results** based on specific conditions.
+
+> **Cypher Example**
+>
+> MATCH (d:DPU)  
+> WHERE d.serviceable = true  
+> RETURN d;
+
+### Common Filtering Scenarios
+- Filter by status
+- Filter by IDs
+- Filter by property values
+
